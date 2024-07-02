@@ -1,23 +1,39 @@
 <script setup lang="ts">
 import { routes } from "@/router/routes";
 import { useRouter } from "vue-router";
-import { ref } from "vue";
+import { computed, ref } from "vue";
 import { useStore } from "vuex";
+import checkAccess from "@/access/checkAccess";
+import accessEnum from "@/access/accessEnum";
 
 const router = useRouter();
 const store = useStore();
 const selectedKeys = ref(["/"]);
 
+const visibleRoutes = computed(() => {
+  return routes.filter((item, index) => {
+    if (item.meta?.hideInMenu) {
+      return false;
+    }
+    if (
+      !checkAccess(store.state.user.loginUser, item?.meta?.access as string)
+    ) {
+      return false;
+    }
+    return true;
+  });
+});
+
 router.afterEach((to, from, failure) => {
   selectedKeys.value = [to.path];
 });
-
-// setTimeout(() => {
-//   store.dispatch("user/getLoginUser", {
-//     userName: "haoran",
-//     role: "admin",
-//   });
-// }, 3000);
+console.log(store.state.user);
+setTimeout(() => {
+  store.dispatch("user/getLoginUser", {
+    userName: "浩然",
+    userRole: accessEnum.ADMIN,
+  });
+}, 3000);
 
 const doMenuClick = (key: string) => {
   router.push({
@@ -27,7 +43,7 @@ const doMenuClick = (key: string) => {
 </script>
 
 <template>
-  <a-row id="globalHeader" style="margin-bottom: 16px" align="center">
+  <a-row id="globalHeader" align="center" :wrap="false">
     <a-col flex="auto">
       <a-menu
         mode="horizontal"
@@ -44,14 +60,14 @@ const doMenuClick = (key: string) => {
             <div class="title">OJ Star</div>
           </div>
         </a-menu-item>
-        <a-menu-item v-for="item in routes" :key="item.path">
+        <a-menu-item v-for="item in visibleRoutes" :key="item.path">
           {{ item.name }}
         </a-menu-item>
       </a-menu>
     </a-col>
     <a-col flex="100px">
       <div>
-        {{ store.state.user?.loginUser?.username ?? "未登录" }}
+        {{ store.state.user?.loginUser?.userName ?? "未登录" }}
       </div>
     </a-col>
   </a-row>
