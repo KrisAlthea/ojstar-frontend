@@ -3,8 +3,8 @@ import GlobalHeader from "@/components/GlobalHeader.vue";
 </script>
 
 <template>
-  <a-layout style="height: 400px">
-    <a-layout-header>
+  <a-layout id="basicLayout" style="height: 400px">
+    <a-layout-header class="header">
       <GlobalHeader />
     </a-layout-header>
     <a-layout-content>
@@ -14,4 +14,12 @@ import GlobalHeader from "@/components/GlobalHeader.vue";
   </a-layout>
 </template>
 
-<style scoped></style>
+<style scoped>
+#basicLayout {
+}
+
+#basicLayout .header {
+  margin-bottom: 16px;
+  box-shadow: #eee 1px 1px 5px;
+}
+</style>
