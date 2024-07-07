@@ -6,6 +6,7 @@ import accessEnum from "@/access/accessEnum";
 import UserLayout from "@/layouts/UserLayout.vue";
 import UserLoginView from "@/views/user/UserLoginView.vue";
 import UserRegisterView from "@/views/user/UserRegisterView.vue";
+import UserInfoView from "@/views/user/UserInfoView.vue";
 
 export const routes: Array<RouteRecordRaw> = [
   {
@@ -22,6 +23,11 @@ export const routes: Array<RouteRecordRaw> = [
         path: "/user/register",
         name: "用户注册",
         component: UserRegisterView,
+      },
+      {
+        path: "/user/info",
+        name: "用户信息",
+        component: UserInfoView,
       },
     ],
     meta: {
