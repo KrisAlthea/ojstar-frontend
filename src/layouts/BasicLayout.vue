@@ -10,7 +10,7 @@ import GlobalHeader from "@/components/GlobalHeader.vue";
     <a-layout-content class="content">
       <router-view />
     </a-layout-content>
-    <a-layout-footer class="footer"> OJ Star by Ryan </a-layout-footer>
+    <a-layout-footer class="footer"> OJ Star by Ryan</a-layout-footer>
   </a-layout>
 </template>
 
@@ -24,7 +24,6 @@ import GlobalHeader from "@/components/GlobalHeader.vue";
 }
 
 #basicLayout .content {
-  background: linear-gradient(to right, #bbb, #fff);
   margin-bottom: 16px;
   padding: 20px;
 }
