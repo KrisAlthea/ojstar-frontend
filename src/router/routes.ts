@@ -9,6 +9,7 @@ import UserInfoView from "@/views/user/UserInfoView.vue";
 import ExampleView from "@/views/ExampleView.vue";
 import AboutView from "@/views/AboutView.vue";
 import AddQuestionView from "@/views/question/AddQuestionView.vue";
+import ManageQuestionView from "@/views/question/ManageQuestionView.vue";
 
 export const routes: Array<RouteRecordRaw> = [
   {
@@ -45,8 +46,21 @@ export const routes: Array<RouteRecordRaw> = [
     // },
   },
   {
+    path: "/update/question",
+    name: "更新题目",
+    component: AddQuestionView,
+    // meta: {
+    //   access: accessEnum.ADMIN,
+    // },
+  },
+  {
+    path: "/manage/question",
+    name: "管理题目",
+    component: ManageQuestionView,
+  },
+  {
     path: "/",
-    name: "home",
+    name: "浏览题目",
     component: ExampleView,
   },
   {
