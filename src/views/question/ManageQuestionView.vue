@@ -1,6 +1,5 @@
 <template>
   <div id="manageQuestionView">
-    <h2>题目管理</h2>
     <a-table
       :ref="tableRef"
       :columns="columns"
@@ -8,9 +7,10 @@
       :pagination="{
         showTotal: true,
         pageSize: searchParams.pageSize,
-        current: searchParams.pageNum,
+        current: searchParams.current,
         total,
       }"
+      @page-change="onPageChange"
     >
       <template #optional="{ record }">
         <a-space>
@@ -23,7 +23,7 @@
 </template>
 
 <script setup lang="ts">
-import { onMounted, ref } from "vue";
+import { onMounted, ref, watchEffect } from "vue";
 import { Question, QuestionControllerService } from "../../../generated";
 import message from "@arco-design/web-vue/es/message";
 import { useRouter } from "vue-router";
@@ -33,47 +33,8 @@ const dataList = ref([]);
 const total = ref(0);
 const searchParams = ref({
   pageSize: 10,
-  pageNum: 1,
+  current: 1,
 });
-
-const loadData = async () => {
-  const res = await QuestionControllerService.listQuestionByPageUsingPost(
-    searchParams.value
-  );
-  if (res.code === 0) {
-    dataList.value = res.data.records;
-    total.value = res.data.total;
-  } else {
-    message.error("加载失败" + res.message);
-  }
-};
-
-onMounted(() => {
-  loadData();
-});
-
-const router = useRouter();
-
-const doUpdate = (question: Question) => {
-  router.push({
-    path: "/update/question",
-    query: {
-      id: question.id,
-    },
-  });
-};
-const doDelete = async (question: Question) => {
-  const res = await QuestionControllerService.deleteQuestionUsingPost({
-    id: question.id,
-  });
-  if (res.code === 0) {
-    message.success("删除成功");
-    // 更新表格
-    await loadData();
-  } else {
-    message.error("删除失败" + res.message);
-  }
-};
 const columns = [
   {
     title: "id",
@@ -124,6 +85,56 @@ const columns = [
     slotName: "optional",
   },
 ];
+
+const loadData = async () => {
+  const res = await QuestionControllerService.listQuestionByPageUsingPost(
+    searchParams.value
+  );
+  if (res.code === 0) {
+    dataList.value = res.data.records;
+    total.value = res.data.total;
+  } else {
+    message.error("加载失败" + res.message);
+  }
+};
+
+onMounted(() => {
+  loadData();
+});
+
+watchEffect(() => {
+  loadData();
+});
+
+const router = useRouter();
+
+const doUpdate = (question: Question) => {
+  router.push({
+    path: "/update/question",
+    query: {
+      id: question.id,
+    },
+  });
+};
+const doDelete = async (question: Question) => {
+  const res = await QuestionControllerService.deleteQuestionUsingPost({
+    id: question.id,
+  });
+  if (res.code === 0) {
+    message.success("删除成功");
+    // 更新表格
+    await loadData();
+  } else {
+    message.error("删除失败" + res.message);
+  }
+};
+
+const onPageChange = (page: number) => {
+  searchParams.value = {
+    ...searchParams.value,
+    current: page,
+  };
+};
 </script>
 
 <style scoped>

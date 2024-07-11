@@ -10,6 +10,8 @@ import ExampleView from "@/views/ExampleView.vue";
 import AboutView from "@/views/AboutView.vue";
 import AddQuestionView from "@/views/question/AddQuestionView.vue";
 import ManageQuestionView from "@/views/question/ManageQuestionView.vue";
+import QuestionsView from "@/views/question/QuestionsView.vue";
+import ViewQuestionView from "@/views/question/ViewQuestionView.vue";
 
 export const routes: Array<RouteRecordRaw> = [
   {
@@ -38,43 +40,49 @@ export const routes: Array<RouteRecordRaw> = [
     },
   },
   {
-    path: "/add/question",
-    name: "创建题目",
-    component: AddQuestionView,
-    // meta: {
-    //   access: accessEnum.ADMIN,
-    // },
-  },
-  {
-    path: "/update/question",
-    name: "更新题目",
-    component: AddQuestionView,
-    // meta: {
-    //   access: accessEnum.ADMIN,
-    // },
-  },
-  {
-    path: "/manage/question",
-    name: "管理题目",
-    component: ManageQuestionView,
-  },
-  {
     path: "/",
-    name: "浏览题目",
-    component: ExampleView,
-  },
-  {
-    path: "/hide",
-    name: "隐藏页面",
-    component: AboutView,
+    name: "主页",
+    component: QuestionsView,
     meta: {
       hideInMenu: true,
     },
   },
   {
-    path: "/admin",
-    name: "仅管理员可见",
-    component: AdminView,
+    path: "/questions",
+    name: "浏览题目",
+    component: QuestionsView,
+  },
+  {
+    path: "/add/question",
+    name: "创建题目",
+    component: AddQuestionView,
+    meta: {
+      access: accessEnum.USER,
+    },
+  },
+  {
+    path: `/view/question/:id`,
+    name: "题目",
+    component: ViewQuestionView,
+    props: true,
+    meta: {
+      access: accessEnum.USER,
+      hideInMenu: true,
+    },
+  },
+  {
+    path: "/update/question",
+    name: "更新题目",
+    component: AddQuestionView,
+    meta: {
+      access: accessEnum.USER,
+      hideInMenu: true,
+    },
+  },
+  {
+    path: "/manage/question",
+    name: "管理题目",
+    component: ManageQuestionView,
     meta: {
       access: accessEnum.ADMIN,
     },
@@ -83,14 +91,33 @@ export const routes: Array<RouteRecordRaw> = [
     path: "/noAuth",
     name: "无权限",
     component: NoAuthView,
+    meta: {
+      hideInMenu: true,
+    },
   },
-  {
-    path: "/about",
-    name: "about",
-    // route level code-splitting
-    // this generates a separate chunk (about.[hash].js) for this route
-    // which is lazy-loaded when the route is visited.
-    component: () =>
-      import(/* webpackChunkName: "about" */ "../views/AboutView.vue"),
-  },
+  // {
+  //   path: "/hide",
+  //   name: "隐藏页面",
+  //   component: AboutView,
+  //   meta: {
+  //     hideInMenu: true,
+  //   },
+  // },
+  // {
+  //   path: "/admin",
+  //   name: "仅管理员可见",
+  //   component: AdminView,
+  //   meta: {
+  //     access: accessEnum.ADMIN,
+  //   },
+  // },
+  // {
+  //   path: "/about",
+  //   name: "about",
+  //   // route level code-splitting
+  //   // this generates a separate chunk (about.[hash].js) for this route
+  //   // which is lazy-loaded when the route is visited.
+  //   component: () =>
+  //     import(/* webpackChunkName: "about" */ "../views/AboutView.vue"),
+  // },
 ];
